@@ -1,6 +1,6 @@
 {
-  "appId": "io.ionic.starter",
-  "appName": "budget-app",
+  "appId": "pl.konradduleba.budget-app",
+  "appName": "Budget App",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "build",
