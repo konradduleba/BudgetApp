@@ -1,124 +1,59 @@
 import {
-  IonHeader,
-  IonToolbar,
-  IonTitle,
   IonContent,
   IonPage,
   IonList,
   IonItem,
-  IonIcon,
   IonLabel,
   IonButton,
-  IonButtons,
   IonImg,
-  IonText
 } from '@ionic/react';
 import { add as addIcon, settingsSharp as optionsIcon, chevronForwardOutline as nextIcon } from 'ionicons/icons';
 import React, { useState, useEffect, useContext } from 'react';
-import { firestore } from '../firebase';
 import { Entry, toEntry, toGetStatus } from '../models';
-import { useAuth } from '../auth';
-import { formatDate } from '../date';
+import { useAuth, getUserEntriesByUserId } from '../auth';
 import slide1Photo from '../img/slide1.png';
-import { CurrencyContext } from '../CurrencyContext'
+import { CurrencyContext } from '../CurrencyContext';
+import { HeaderWithTwoOptions } from '../components/Headers';
+import { renderBudget, setMainAccountInfo } from '../components/RenderBudget';
 
 const HomePage: React.FC = () => {
   const { userId } = useAuth();
   const [currency] = useContext(CurrencyContext);
   const [entries, setEntries] = useState<Entry[]>([]);
-  const [statusAmount, setStatusAmount] = useState(0);
-  const [statusIncome, setStatusIncome] = useState(0);
-  const [statusExpense, setStatusExpense] = useState(0);
+  const [statusAmount, setStatusAmount] = useState([]);
+  const [statusIncome, setStatusIncome] = useState([]);
+  const [statusExpense, setStatusExpense] = useState([]);
 
   useEffect(() => {
-    const entriesRef = firestore.collection('users').doc(userId)
-      .collection('entries');
+    const entriesRef = getUserEntriesByUserId(userId);
     return entriesRef.orderBy('date', 'desc')
       .onSnapshot(({ docs }) => {
         setEntries(docs.map(toEntry));
-        setStatusAmount(toGetStatus(docs, 'amount'));
-        setStatusIncome(toGetStatus(docs, 'income'));
-        setStatusExpense(toGetStatus(docs, 'expense'));
+        const result = toGetStatus(docs, currency.symbol);
+        setAllStatus(result);
       });
-  }, [userId]);
+  }, [userId, currency]);
 
-  const modifyEntries = () => {
-    const entryTable = [];
-    const modifiedTable = [];
-    entries.map(({ date, id, description, amount, expense, income }) => {
-      if (entryTable.includes(formatDate(date))) {
-        const index = entryTable.indexOf(formatDate(date));
-        return modifiedTable[index].utils.push({
-          id,
-          description,
-          amount,
-          expense,
-          income
-        })
-      }
-      else {
-        entryTable.push(formatDate(date));
-        return modifiedTable.push({
-          date: formatDate(date),
-          utils: [{
-            id,
-            description,
-            amount,
-            expense,
-            income
-          }]
-        })
-      }
-    })
-
-    return modifiedTable;
+  const setAllStatus = result => {
+    const { amount, income, expense } = setMainAccountInfo(result);
+    setStatusAmount(amount);
+    setStatusIncome(income);
+    setStatusExpense(expense);
   }
 
-  const renderBudget = () => {
+  const data = { nextIcon, currency, entries }
 
-    const modifiedTable = modifyEntries();
-
-    return (
-      modifiedTable.map(entry =>
-        <div key={entry.date}>
-          <p className="home-page_date">{entry.date}</p>
-          <ul>
-            {entry.utils.map(({ id, description, income, expense, amount }) => <IonItem
-              lines="none"
-              key={id}
-              className="home-page_item_list ion-justify-content-between"
-              routerLink={`/my/entries/view/${id}`}>
-              <p className="home-page_description">{description}</p>
-              <div className="home-page_amount_container">
-                <p className={`home-page_income_${income} home-page_expense_${expense}`}>{amount}{currency}</p>
-                <IonButton fill="clear" className="home-page_edit_icon">
-                  <IonIcon icon={nextIcon} className='home-page_next_icon' />
-                </IonButton>
-              </div>
-            </IonItem>)}
-          </ul>
-        </div>
-      )
-    )
-  }
+  const renderStatus = data => data.map(({ amount, currency }) => <p key={`${amount}${currency}`}>{amount.toFixed(2)}{currency}</p>)
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonButtons className='home-page_options_left'>
-          <IonButton expand="block" fill="clear" routerLink="/my/entries/add">
-            <IonIcon icon={addIcon} className="home-page_icon" />
-          </IonButton>
-        </IonButtons>
-        <IonToolbar>
-          <IonTitle className="home-page_title">PiggyApp</IonTitle>
-        </IonToolbar>
-        <IonButtons className='home-page_options'>
-          <IonButton expand="block" fill="clear" routerLink="./settings">
-            <IonIcon icon={optionsIcon} className="home-page_icon" />
-          </IonButton>
-        </IonButtons>
-      </IonHeader>
+      <HeaderWithTwoOptions
+        title='Piggy Budget'
+        leftOptionIcon={addIcon}
+        leftOptionRouterPath='/my/entries/add'
+        rightOptionIcon={optionsIcon}
+        rightOptionRouterPath='./settings'
+      />
       <IonContent>
         {!entries.length ?
           <IonContent>
@@ -136,19 +71,19 @@ const HomePage: React.FC = () => {
 
           <IonContent>
             <div className="home-page_status">
-              <IonText className={`home-page_status_amount ${statusAmount < 0 ? false : null}`}>{statusAmount}{currency}</IonText>
+              {renderStatus(statusAmount)}
               <div className="home-page_details">
                 <div>
                   <p className="home-page_status_title">Zarobiono</p>
-                  <IonText className="home-page_status_income">{statusIncome}{currency}</IonText>
+                  {renderStatus(statusIncome)}
                 </div>
                 <div>
                   <p className="home-page_status_title">Wydano</p>
-                  <IonText className="home-page_status_expense">{statusExpense}{currency}</IonText>
+                  {renderStatus(statusExpense)}
                 </div>
               </div>
             </div>
-            {renderBudget()}
+            {renderBudget(data)}
           </IonContent>
         }
       </IonContent>

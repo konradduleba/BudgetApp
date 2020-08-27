@@ -23,18 +23,22 @@ const WelcomePage: React.FC = () => {
   const handleSlide = () => setStatus('Zaloguj się');
 
   const slides = [{
+    key: "first_slide",
     photo: slide1Photo,
     text: 'Zaplanuj swoje wydatki z naszą aplikacją.'
   },
   {
+    key: "second_slide",
     photo: slide1Photo,
     text: 'Kontroluj swoje finanse z dowolnego miejsca.'
   },
   {
+    key: "third_slide",
     photo: slide1Photo,
     text: 'Nie martw się obliczeniami. Zrobimy to wszystko za Ciebie.'
   },
   {
+    key: "fourth_slide",
     photo: slide1Photo,
     text: 'Życzymy powodzenia !'
   }]
@@ -43,8 +47,8 @@ const WelcomePage: React.FC = () => {
     <IonPage>
       <IonContent className="ion-padding">
         <IonSlides pager={true} options={slideOptions} mode="md" onIonSlideReachEnd={handleSlide}>
-          {slides.map(({ photo, text }) =>
-            <IonSlide>
+          {slides.map(({ key, photo, text }) =>
+            <IonSlide key={key}>
               <IonList>
                 <IonItem lines="none" className="slide_container">
                   <IonImg src={photo} className="slide_photo" />

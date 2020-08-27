@@ -1,27 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
-  IonHeader,
-  IonToolbar,
-  IonTitle,
   IonContent,
-  IonPage,
-  IonButtons,
-  IonBackButton,
-  IonList,
-  IonItem,
-  IonInput,
-  IonTextarea,
-  IonButton,
-  IonDatetime
+  IonPage
 } from '@ionic/react';
-import { firestore } from '../firebase';
-import { useAuth } from '../auth';
+import { useAuth, checkDataProprietyAndAddEntry } from '../auth';
 import { useHistory } from 'react-router';
-import { chevronBackOutline as backIcon } from 'ionicons/icons';
-
-
+import { CurrencyContext, CurrencyListContext, showAvaibleCurrencies } from '../CurrencyContext';
+import { HeaderWithTitleAndBackButton } from '../components/Headers';
+import { BudgetInputFields } from '../components/BudgetInputFields';
 
 const AddEntryPage: React.FC = () => {
+
   const { userId } = useAuth();
   const history = useHistory();
   const [amount, setAmount] = useState('');
@@ -30,14 +19,26 @@ const AddEntryPage: React.FC = () => {
   const [date, setDate] = useState('');
   const [description, setDescription] = useState('');
 
+  const [localCurrency, setLocalCurrency] = useState({
+    symbol: '',
+    code: null,
+    rateForPLN: null,
+  });
+  const [calcCurrency, setCalcCurrency] = useState(false);
+  const [warningMessage, setWarningMessage] = useState(null);
+
+  const [currency] = useContext(CurrencyContext);
+  const [currencyList] = useContext(CurrencyListContext);
+  const [currencyOptions, setCurrencyOptions] = useState([]);
+  const [currencySheet, showCurrencySheet] = useState(false);
+
+  useEffect(() => setCurrencyOptions(showAvaibleCurrencies(setLocalCurrency, currencyList, currency)), [currencyList, currency])
+
   const handleSave = async () => {
-    if (amount !== '' && date !== '' && description !== '' && (income || expense)) {
-      const entriesRef = firestore.collection('users').doc(userId)
-        .collection('entries');
-      const entryData = { date, amount, description, income, expense };
-      await entriesRef.add(entryData);
-      history.goBack();
-    }
+    const data = { amount, date, description, income, expense, currency, currencyList, localCurrency, calcCurrency, userId, id: null }
+    const { error, message } = await checkDataProprietyAndAddEntry(data);
+    setWarningMessage({ error, message });
+    if (!error) history.goBack();
   }
 
   const handleIncome = () => {
@@ -50,39 +51,22 @@ const AddEntryPage: React.FC = () => {
     setIncome(false)
   }
 
+  const data = {
+    type: 'add',
+    date, setDate,
+    description, setDescription,
+    expense, handleExpense,
+    income, handleIncome,
+    calcCurrency, setCalcCurrency,
+    amount, setAmount,
+    showCurrencySheet, localCurrency, currencySheet, currencyOptions, currency, warningMessage, handleSave, currencyList
+  }
+
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle className="home-page_title">Dodaj swój budżet</IonTitle>
-        </IonToolbar>
-        <IonButtons className='home-page_options_settings_place'>
-          <IonBackButton icon={backIcon} className="home-page_icon" />
-        </IonButtons>
-      </IonHeader>
+      <HeaderWithTitleAndBackButton title='Dodaj swój budżet' />
       <IonContent className="ion-padding">
-        <IonList className="add-entry_list">
-          <IonItem lines="none">
-            <IonDatetime value={date} className="add-entry_input" placeholder="Kiedy to było?"
-              onIonChange={event => setDate(event.detail.value)}
-            />
-          </IonItem>
-          <IonItem lines="none">
-            <IonInput value={amount} type="number" placeholder="Wpisz kwotę" required={true} className="add-entry_input"
-              onIonChange={event => setAmount(event.detail.value)}
-            />
-          </IonItem>
-          <IonItem lines="none">
-            <IonTextarea value={description} required={true} className="add-entry_input" placeholder="Opis"
-              onIonChange={event => setDescription(event.detail.value)} />
-          </IonItem>
-          <IonItem lines="none" className="add-entry_last_entry">
-            <IonButton onClick={handleIncome} className={`add-entry_button ${income}`}>Przychód</IonButton>
-            <p className="add-entry_income_or_expense">Czy</p>
-            <IonButton onClick={handleExpense} className={`add-entry_button expense ${expense}`}>Wydatek</IonButton>
-          </IonItem>
-          <IonButton onClick={handleSave} className="add-entry_button_last">Dodaj</IonButton>
-        </IonList>
+        <BudgetInputFields data={data} />
       </IonContent>
     </IonPage>
   );

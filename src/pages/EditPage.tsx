@@ -1,24 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
-  IonHeader,
-  IonToolbar,
-  IonTitle,
   IonContent,
-  IonPage,
-  IonButtons,
-  IonBackButton,
-  IonList,
-  IonItem,
-  IonInput,
-  IonTextarea,
-  IonButton,
-  IonDatetime
+  IonPage
 } from '@ionic/react';
 import { firestore } from '../firebase';
-import { useAuth } from '../auth';
+import { useAuth, checkDataProprietyAndAddEntry } from '../auth';
 import { useHistory } from 'react-router';
-import { chevronBackOutline as backIcon } from 'ionicons/icons';
 import { useParams } from 'react-router';
+import { CurrencyContext, CurrencyListContext, showAvaibleCurrencies } from '../CurrencyContext';
+import { HeaderWithTitleAndBackButton } from '../components/Headers';
+import { BudgetInputFields } from '../components/BudgetInputFields';
+
 
 interface RouteParams {
   id: string;
@@ -34,26 +26,23 @@ const EditPage: React.FC = () => {
   const [date, setDate] = useState('');
   const [description, setDescription] = useState('');
 
+  const [localCurrency, setLocalCurrency] = useState({
+    symbol: '',
+    code: null,
+  });
+  const [calcCurrency, setCalcCurrency] = useState(false);
+  const [warningMessage, setWarningMessage] = useState(null);
+
+  const [currency] = useContext(CurrencyContext);
+  const [currencyList] = useContext(CurrencyListContext);
+  const [currencyOptions, setCurrencyOptions] = useState([]);
+  const [currencySheet, showCurrencySheet] = useState(false);
+
 
   const { id } = useParams<RouteParams>();
 
-  const handleSave = async () => {
-    if (amount !== '' && date !== '' && description !== '' && (income || expense)) {
-      const entryRef = firestore.collection('users').doc(userId)
-        .collection('entries').doc(id);
-      await entryRef.update({
-        description,
-        amount,
-        income,
-        expense,
-        date
-      });
-
-      history.goBack();
-    }
-  }
-
   useEffect(() => {
+    setCurrencyOptions(showAvaibleCurrencies(setLocalCurrency, currencyList, currency));
     const entryRef = firestore.collection('users').doc(userId)
       .collection('entries').doc(id);
     entryRef.get().then(doc => {
@@ -62,8 +51,19 @@ const EditPage: React.FC = () => {
       setDate(doc.data().date);
       setIncome(doc.data().income);
       setExpense(doc.data().expense);
+      setLocalCurrency({
+        symbol: doc.data().currency,
+        code: doc.data().code
+      })
     });
-  }, [userId, id]);
+  }, [userId, id, currency, currencyList])
+
+  const handleSave = async () => {
+    const data = { amount, date, description, income, expense, currency, currencyList, localCurrency, calcCurrency, userId, id };
+    const { error, message } = await checkDataProprietyAndAddEntry(data);
+    setWarningMessage({ error, message });
+    if (!error) history.goBack();
+  }
 
   const handleIncome = () => {
     setIncome(!income);
@@ -75,39 +75,22 @@ const EditPage: React.FC = () => {
     setIncome(false)
   }
 
+  const data = {
+    type: 'edit',
+    date, setDate,
+    description, setDescription,
+    expense, handleExpense,
+    income, handleIncome,
+    calcCurrency, setCalcCurrency,
+    amount, setAmount,
+    showCurrencySheet, localCurrency, currencySheet, currencyOptions, currency, warningMessage, handleSave, currencyList
+  }
+
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle className="home-page_title">Edytuj dane</IonTitle>
-        </IonToolbar>
-        <IonButtons className='home-page_options_settings_place'>
-          <IonBackButton icon={backIcon} className="home-page_icon" />
-        </IonButtons>
-      </IonHeader>
+      <HeaderWithTitleAndBackButton title='Edytuj' />
       <IonContent className="ion-padding">
-        <IonList className="add-entry_list">
-          <IonItem lines="none">
-            <IonDatetime value={date} className="add-entry_input" placeholder="Kiedy to było?"
-              onIonChange={event => setDate(event.detail.value)}
-            />
-          </IonItem>
-          <IonItem lines="none">
-            <IonInput value={amount} type="number" placeholder="Wpisz kwotę" required={true} className="add-entry_input"
-              onIonChange={event => setAmount(event.detail.value)}
-            />
-          </IonItem>
-          <IonItem lines="none">
-            <IonTextarea value={description} required={true} className="add-entry_input" placeholder="Opis"
-              onIonChange={event => setDescription(event.detail.value)} />
-          </IonItem>
-          <IonItem lines="none" className="add-entry_last_entry">
-            <IonButton onClick={handleIncome} className={`add-entry_button ${income}`}>Przychód</IonButton>
-            <p className="add-entry_income_or_expense">Czy</p>
-            <IonButton onClick={handleExpense} className={`add-entry_button expense ${expense}`}>Wydatek</IonButton>
-          </IonItem>
-          <IonButton onClick={handleSave} className="add-entry_button_last">Zapisz</IonButton>
-        </IonList>
+        <BudgetInputFields data={data} />
       </IonContent>
     </IonPage>
   );

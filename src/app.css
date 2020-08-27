@@ -58,6 +58,12 @@ ion-header::after{
     padding-left: 10px;
 }
 
+.without_register{
+    margin-top: 80px;
+    color: gray;
+    width: 100%;
+}
+
 .add-entry_input{
     width: 100%;
     /* text-align: center; */
@@ -65,6 +71,43 @@ ion-header::after{
     background-color: rgb(240, 240, 240);
     padding-left: 10px;
     margin-bottom: 20px;
+}
+
+.calc-currency-container{
+    margin-bottom: 10px;
+    margin: 0 10px 10px;
+}
+
+.calc-currency{
+    color: lightgray;
+    font-size: 35px;
+    margin: 0 0 0 auto;
+}
+
+.calc-currency-true{
+    color: green;
+}
+
+.calc-currency-text{
+    color: gray;
+}
+
+.add-entry_input_cash{
+    margin-top: 0;
+    border-radius: 15px;
+    /* background-color: rgb(240, 240, 240); */
+    width: 50%;
+    padding-left: 10px;
+    margin-bottom: 20px;
+    --background: rgb(240, 240, 240);
+    --border-color: unset;
+    color: gray;
+    --color: gray;
+    height: 38px;
+    --box-shadow: unset;
+    --border-radius: 15px;
+    text-transform: initial;
+    font-size: 16px;
 }
 
 .login_input:last-child{
@@ -133,6 +176,9 @@ ion-header::after{
 .home-page_icon{
     --icon-font-size: 30px;
     font-size: 30px;
+}
+ion-icon.home-page_icon.function{
+    font-size: 40px;
 }
 
 .empty-home-page{
@@ -282,11 +328,18 @@ ion-item.home-page_item_list{
     flex-direction: row;
     justify-content: space-between;
     margin: 30px 0 0;
-    font-size: 20px;
     color: gray;
 }
 
+.home-page_status p{
+    font-size: 30px;
+    margin: 0;
+}
 
+.home-page_details p{
+    font-size: 20px;
+    margin-bottom: 10px;
+}
 .home-page_status_amount{
     font-size: 30px;
 }
@@ -296,7 +349,9 @@ ion-item.home-page_item_list{
     color: red;
 }
 
-.home-page_status_title{
+p.home-page_status_title{
+    display: flex;
+    flex-direction: column;
     font-size: 11px;
 }
 
@@ -321,4 +376,71 @@ ion-footer.footer-md::before{
 
 .action-sheet-group{
     border-radius: 10px 10px 0 0;
+}
+
+.settings-page_icons{
+    position: absolute;
+    right: 10px;
+    font-size: 25px;
+}
+
+.settings-page_property{
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.settings-page_synchronizeData{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.settings-page_synchronizeData .settings-page_synchronizeData_info{
+   color: gray;
+}
+
+.settings-page_synchronizeData_options{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.settings-page_synchronizeData_option{
+    width: 40vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.settings-page_synchronizeData_option.login{
+   background-color: #3a7be0;
+}
+
+.settings-page_synchronizeData_option.register{
+    background-color: #e9b15d;
+ }
+
+.settings-page_error_message{
+    margin-bottom: 20px;
+}
+.settings-page_error_message.true{
+    color: red;
+}
+.settings-page_error_message.false{
+    color: green;
+}
+
+.add-entry-page_error_message{
+    margin-bottom: 0;
+}
+
+.add-entry-page_error_message.true{
+    color: red;
+}
+
+.add-entry-page_error_message.false{
+    color: green;
 }

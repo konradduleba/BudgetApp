@@ -11,6 +11,7 @@ import NotFoundPage from './pages/NotFoundPage';
 import './app.css';
 import RegisterPage from './pages/RegisterPage';
 import WelcomePage from './pages/WelcomePage';
+import { CurrencyListProvider } from './CurrencyContext';
 
 const App: React.FC = () => {
   const { loading, auth } = useAuthInit();
@@ -20,26 +21,28 @@ const App: React.FC = () => {
   return (
     <IonApp>
       <AuthContext.Provider value={auth}>
-        <IonReactRouter>
-          <Switch>
-            <Route exact path="/welcome">
-              <WelcomePage />
-            </Route>
-            <Route exact path="/login">
-              <LoginPage />
-            </Route>
-            <Route exact path="/register">
-              <RegisterPage />
-            </Route>
-            <Route path="/my">
-              <AppTabs />
-            </Route>
-            <Redirect exact path="/" to="/my/entries" />
-            <Route>
-              <NotFoundPage />
-            </Route>
-          </Switch>
-        </IonReactRouter>
+        <CurrencyListProvider>
+          <IonReactRouter>
+            <Switch>
+              <Route exact path="/welcome">
+                <WelcomePage />
+              </Route>
+              <Route exact path="/login">
+                <LoginPage />
+              </Route>
+              <Route exact path="/register">
+                <RegisterPage />
+              </Route>
+              <Route path="/my">
+                <AppTabs />
+              </Route>
+              <Redirect exact path="/" to="/my/entries" />
+              <Route>
+                <NotFoundPage />
+              </Route>
+            </Switch>
+          </IonReactRouter>
+        </CurrencyListProvider>
       </AuthContext.Provider>
     </IonApp>
   );

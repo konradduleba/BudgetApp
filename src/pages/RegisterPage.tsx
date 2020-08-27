@@ -8,13 +8,10 @@ import {
   IonItem,
   IonInput,
   IonList,
-  IonText,
-  IonLoading,
   IonImg
 } from '@ionic/react';
 import { Redirect } from 'react-router';
-import { useAuth } from '../auth';
-import { auth } from '../firebase';
+import { useAuth, handleRegister } from '../auth';
 import slide1Photo from '../img/slide1.png';
 
 
@@ -22,18 +19,12 @@ const RegisterPage: React.FC = () => {
   const { loggedIn } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [status, setStatus] = useState({ loading: false, error: false });
+  const [registerMessage, setRegisterMessage] = useState(null);
 
-  const handleRegister = async () => {
-    try {
-      setStatus({ loading: true, error: false });
-      await auth.createUserWithEmailAndPassword(email, password);
-    } catch (error) {
-      setStatus({ loading: false, error: true });
-    }
-  };
+  const handleRegisterUser = async () => setRegisterMessage(await handleRegister(email, password))
 
   if (loggedIn) return <Redirect to="my/entries" />
+
   return (
     <IonPage>
       <IonHeader>
@@ -55,14 +46,11 @@ const RegisterPage: React.FC = () => {
               onIonChange={event => setPassword(event.detail.value)}
             ></IonInput>
           </IonItem>
-          {status.error &&
-            <IonText color="danger">Coś nie pykło</IonText>
-          }
+          {registerMessage && <span className={`settings-page_error_message ${registerMessage.error}`}>{registerMessage.message}</span>}
         </IonList>
-        <IonButton className="login_btn" onClick={handleRegister}>Zarejestruj</IonButton>
+        <IonButton className="login_btn" onClick={handleRegisterUser}>Zarejestruj</IonButton>
         <p className="login_motto button_space">Masz już konto?</p>
         <IonButton className="login_btn login_register" routerLink="./login">Zaloguj się</IonButton>
-        <IonLoading isOpen={status.loading} />
       </IonContent>
     </IonPage>
   );

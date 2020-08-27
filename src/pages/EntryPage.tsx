@@ -1,14 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {
-  IonHeader,
-  IonToolbar,
-  IonTitle,
   IonContent,
   IonPage,
   IonFabButton,
-  IonButtons,
-  IonButton,
-  IonIcon,
   IonList,
   IonLabel,
   IonItem,
@@ -16,13 +10,13 @@ import {
   IonFab
 } from '@ionic/react';
 import { useParams, useHistory } from 'react-router';
-import { firestore } from '../firebase';
 import { Entry, toEntry } from '../models';
-import { useAuth } from '../auth';
+import { useAuth, handleDeleteDocumentByEntryId, getUserSingleEntryById } from '../auth';
 import { formatDate } from '../date';
-import { chevronBackOutline as backIcon } from 'ionicons/icons';
-import { AiFillDelete as DeleteIcon } from 'react-icons/ai';
+import { closeOutline as deleteIcon } from 'ionicons/icons';
+// import { AiFillDelete as DeleteIcon } from 'react-icons/ai';
 import { FaEdit as EditIcon } from 'react-icons/fa';
+import { HeaderWithOneFunctionOption } from '../components/Headers'
 
 
 interface RouteParams {
@@ -36,34 +30,26 @@ const EntryPage: React.FC = () => {
   const [entry, setEntry] = useState<Entry>();
 
   useEffect(() => {
-    const entryRef = firestore.collection('users').doc(userId)
-      .collection('entries').doc(id)
-    entryRef.get().then(doc => setEntry(toEntry(doc)));
-    entryRef.onSnapshot(() => entryRef.get().then(doc => setEntry(toEntry(doc))));
+    const handleData = async () => {
+      const entryRef = getUserSingleEntryById(userId, id);
+      entryRef.get().then(doc => setEntry(toEntry(doc)));
+      entryRef.onSnapshot(() => entryRef.get().then(doc => setEntry(toEntry(doc))));
+    }
+    handleData();
   }, [userId, id]);
 
   const handleDelete = async () => {
     history.goBack();
-    const entryRef = firestore.collection('users').doc(userId)
-      .collection('entries').doc(id);
-    await entryRef.delete();
+    await handleDeleteDocumentByEntryId(userId, id);
   }
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle className="home-page_title">Podgląd</IonTitle>
-        </IonToolbar>
-        <IonButtons className='home-page_options_left'>
-          <IonButton expand="block" fill="clear" onClick={() => history.goBack()}>
-            <IonIcon icon={backIcon} className="home-page_icon" />
-          </IonButton>
-        </IonButtons>
-        <IonButtons className='home-page_options' onClick={handleDelete}>
-          <DeleteIcon className="home-page_icon" />
-        </IonButtons>
-      </IonHeader>
+      <HeaderWithOneFunctionOption
+        title='Podgląd'
+        functionIcon={deleteIcon}
+        handleFunction={handleDelete}
+      />
       <IonContent className="ion-padding">
         <IonList>
           <IonItem lines="none">

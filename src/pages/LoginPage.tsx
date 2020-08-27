@@ -8,30 +8,20 @@ import {
   IonItem,
   IonInput,
   IonList,
-  IonText,
-  IonLoading,
   IonImg
 } from '@ionic/react';
 import { Redirect } from 'react-router';
-import { useAuth } from '../auth';
-import { auth } from '../firebase';
+import { useAuth, handleLogin, loggedWithoutRegister } from '../auth';
 import slide1Photo from '../img/slide1.png';
-
 
 const LoginPage: React.FC = () => {
   const { loggedIn } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [status, setStatus] = useState({ loading: false, error: false });
+  const [loginMessage, setLoginMessage] = useState(null);
 
-  const handleLogin = async () => {
-    try {
-      setStatus({ loading: true, error: false });
-      await auth.signInWithEmailAndPassword(email, password);
-    } catch (error) {
-      setStatus({ loading: false, error: true });
-    }
-  };
+
+  const handleLoginUser = async () => setLoginMessage(await handleLogin(email, password))
 
   if (loggedIn) return <Redirect to="my/entries" />
 
@@ -45,7 +35,7 @@ const LoginPage: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding login_content">
-        <h2 className="app_name">PiggyApp</h2>
+        <h2 className="app_name">PiggyBudget</h2>
         <p className="login_motto">Z łatwością kieruj swoimi finansami, planuj swoje wydatki i to wszystko z jednego miejsca.</p>
         <IonList>
           <IonItem lines="none">
@@ -57,14 +47,12 @@ const LoginPage: React.FC = () => {
               onIonChange={event => setPassword(event.detail.value)}
             ></IonInput>
           </IonItem>
-          {status.error &&
-            <IonText color="danger">Błędne dane logowania.</IonText>
-          }
+          {loginMessage && <span className={`settings-page_error_message ${loginMessage.error}`}>{loginMessage.message}</span>}
         </IonList>
-        <IonButton className="login_btn" onClick={handleLogin}>Zaloguj się</IonButton>
+        <IonButton className="login_btn" onClick={handleLoginUser}>Zaloguj się</IonButton>
         <p className="login_motto">lub</p>
         <IonButton className="login_btn login_register" routerLink="./register">Zarejestruj</IonButton>
-        <IonLoading isOpen={status.loading} />
+        <IonButton className="login_btn without_register" fill="clear" onClick={loggedWithoutRegister}>Kontynuuj bez logowania się</IonButton>
       </IonContent>
     </IonPage>
   );
