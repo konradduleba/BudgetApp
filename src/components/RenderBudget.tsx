@@ -1,6 +1,6 @@
 import React from 'react';
 import { IonItem, IonButton, IonIcon } from '@ionic/react';
-import { formatDate } from '../date';
+import { formatDate } from '../utils/date';
 
 export const renderBudget = ({ nextIcon, currency, entries }) => {
     const modifiedTable = modifyEntries(entries);
@@ -8,18 +8,18 @@ export const renderBudget = ({ nextIcon, currency, entries }) => {
     return (
         modifiedTable.map(entry =>
             <div key={entry.date}>
-                <p className="home-page_date">{entry.date}</p>
+                <p className="date">{entry.date}</p>
                 <ul>
                     {entry.utils.map(({ id, description, income, expense, amount, otherCurrency }) => <IonItem
                         lines="none"
                         key={id}
-                        className="home-page_item_list ion-justify-content-between"
+                        className="item_list"
                         routerLink={`/my/entries/view/${id}`}>
-                        <p className="home-page_description">{description}</p>
-                        <div className="home-page_amount_container">
-                            <p className={`home-page_income_${income} home-page_expense_${expense}`}>{amount}{otherCurrency ? otherCurrency : currency.symbol}</p>
-                            <IonButton fill="clear" className="home-page_edit_icon">
-                                <IonIcon icon={nextIcon} className='home-page_next_icon' />
+                        <p className="description">{description}</p>
+                        <div className="amount_container">
+                            <p className={`income_${income} expense_${expense}`}>{amount}{otherCurrency ? otherCurrency : currency.symbol}</p>
+                            <IonButton fill="clear" className="edit_icon">
+                                <IonIcon icon={nextIcon} />
                             </IonButton>
                         </div>
                     </IonItem>)}

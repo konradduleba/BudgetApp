@@ -9,10 +9,10 @@ import {
 } from '@ionic/react';
 import { add as addIcon, settingsSharp as optionsIcon, chevronForwardOutline as nextIcon } from 'ionicons/icons';
 import React, { useState, useEffect, useContext } from 'react';
-import { Entry, toEntry, toGetStatus } from '../models';
-import { useAuth, getUserEntriesByUserId } from '../auth';
-import slide1Photo from '../img/slide1.png';
-import { CurrencyContext } from '../CurrencyContext';
+import { Entry, toEntry, toGetStatus } from '../utils/models';
+import { useAuth, getUserEntriesByUserId } from '../utils/auth';
+import emptyWallet from '../img/empty_wallet.png';
+import { CurrencyContext } from '../utils/CurrencyContext';
 import { HeaderWithTwoOptions } from '../components/Headers';
 import { renderBudget, setMainAccountInfo } from '../components/RenderBudget';
 
@@ -46,7 +46,7 @@ const HomePage: React.FC = () => {
   const renderStatus = data => data.map(({ amount, currency }) => <p key={`${amount}${currency}`}>{amount.toFixed(2)}{currency}</p>)
 
   return (
-    <IonPage>
+    <IonPage className='home_page'>
       <HeaderWithTwoOptions
         title='Piggy Budget'
         leftOptionIcon={addIcon}
@@ -57,12 +57,12 @@ const HomePage: React.FC = () => {
       <IonContent>
         {!entries.length ?
           <IonContent>
-            <IonList className="empty-home-page">
+            <IonList className="empty_home_page">
               <IonItem lines="none">
-                <IonImg src={slide1Photo} className="slide_photo" />
+                <IonImg src={emptyWallet} className="empty_wallet" />
               </IonItem>
-              <IonLabel className="empty-home-page_main_text">Coś tu pusto</IonLabel>
-              <IonLabel className="empty-home-page_text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Natus, officiis!</IonLabel>
+              <IonLabel className="main_text">Coś tu pusto</IonLabel>
+              <IonLabel className="text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Natus, officiis!</IonLabel>
               <IonButton className="login_btn" routerLink="/my/entries/add">Dodaj swój pierwszy budżet</IonButton>
             </IonList>
           </IonContent>
@@ -70,15 +70,15 @@ const HomePage: React.FC = () => {
           :
 
           <IonContent>
-            <div className="home-page_status">
+            <div className="status">
               {renderStatus(statusAmount)}
-              <div className="home-page_details">
+              <div className="details">
                 <div>
-                  <p className="home-page_status_title">Zarobiono</p>
+                  <p className="title">Zarobiono</p>
                   {renderStatus(statusIncome)}
                 </div>
                 <div>
-                  <p className="home-page_status_title">Wydano</p>
+                  <p className="title">Wydano</p>
                   {renderStatus(statusExpense)}
                 </div>
               </div>

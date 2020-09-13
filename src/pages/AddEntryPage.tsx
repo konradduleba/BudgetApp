@@ -3,9 +3,9 @@ import {
   IonContent,
   IonPage
 } from '@ionic/react';
-import { useAuth, checkDataProprietyAndAddEntry } from '../auth';
+import { useAuth, checkDataProprietyAndAddEntry } from '../utils/auth';
 import { useHistory } from 'react-router';
-import { CurrencyContext, CurrencyListContext, showAvaibleCurrencies } from '../CurrencyContext';
+import { CurrencyContext, CurrencyListContext, showAvaibleCurrencies } from '../utils/CurrencyContext';
 import { HeaderWithTitleAndBackButton } from '../components/Headers';
 import { BudgetInputFields } from '../components/BudgetInputFields';
 
@@ -63,9 +63,9 @@ const AddEntryPage: React.FC = () => {
   }
 
   return (
-    <IonPage>
+    <IonPage className='app_wrapper pc'>
       <HeaderWithTitleAndBackButton title='Dodaj swój budżet' />
-      <IonContent className="ion-padding">
+      <IonContent>
         <BudgetInputFields data={data} />
       </IonContent>
     </IonPage>

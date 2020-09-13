@@ -11,7 +11,7 @@ export const DatePicker = ({ type, value, onChangeFunction }) => (
                     cancelText={dateTime.cancelText}
                     monthShortNames={dateTime.monthShortNames}
                     value={value}
-                    className="add-entry_input"
+                    className="date_input"
                     placeholder="Kiedy to było?"
                     onIonChange={event => onChangeFunction(event.detail.value)}
                 />
@@ -21,7 +21,7 @@ export const DatePicker = ({ type, value, onChangeFunction }) => (
             <IonItem lines="none">
                 <IonDatetime
                     value={value}
-                    className="add-entry_input"
+                    className="date_input"
                     placeholder="When was it?"
                     onIonChange={event => onChangeFunction(event.detail.value)}
                 />

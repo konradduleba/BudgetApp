@@ -3,11 +3,11 @@ import {
   IonContent,
   IonPage
 } from '@ionic/react';
-import { firestore } from '../firebase';
-import { useAuth, checkDataProprietyAndAddEntry } from '../auth';
+import { firestore } from '../utils/firebase';
+import { useAuth, checkDataProprietyAndAddEntry } from '../utils/auth';
 import { useHistory } from 'react-router';
 import { useParams } from 'react-router';
-import { CurrencyContext, CurrencyListContext, showAvaibleCurrencies } from '../CurrencyContext';
+import { CurrencyContext, CurrencyListContext, showAvaibleCurrencies } from '../utils/CurrencyContext';
 import { HeaderWithTitleAndBackButton } from '../components/Headers';
 import { BudgetInputFields } from '../components/BudgetInputFields';
 
@@ -87,9 +87,9 @@ const EditPage: React.FC = () => {
   }
 
   return (
-    <IonPage>
+    <IonPage className='app_wrapper pc'>
       <HeaderWithTitleAndBackButton title='Edytuj' />
-      <IonContent className="ion-padding">
+      <IonContent>
         <BudgetInputFields data={data} />
       </IonContent>
     </IonPage>

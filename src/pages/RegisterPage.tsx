@@ -11,8 +11,8 @@ import {
   IonImg
 } from '@ionic/react';
 import { Redirect } from 'react-router';
-import { useAuth, handleRegister } from '../auth';
-import slide1Photo from '../img/slide1.png';
+import { useAuth, handleRegister } from '../utils/auth';
+import { appLogo } from '../utils/variables'
 
 
 const RegisterPage: React.FC = () => {
@@ -26,11 +26,11 @@ const RegisterPage: React.FC = () => {
   if (loggedIn) return <Redirect to="my/entries" />
 
   return (
-    <IonPage>
+    <IonPage className='register_page'>
       <IonHeader>
         <IonToolbar>
-          <IonItem lines="none" className="slide_container" slot="start">
-            <IonImg src={slide1Photo} className="login_photo" />
+          <IonItem lines="none" slot="start">
+            <IonImg src={appLogo} className="login_photo" />
           </IonItem>
         </IonToolbar>
       </IonHeader>

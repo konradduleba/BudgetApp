@@ -4,17 +4,23 @@ import {
 import { IonReactRouter } from '@ionic/react-router';
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { AuthContext, useAuthInit } from './auth'
+import { AuthContext, useAuthInit } from './utils/auth'
 import LoginPage from './pages/LoginPage';
-import AppTabs from './AppTabs';
+import NewsPage from './pages/NewsPage';
+import AppTabs from './pages/AppTabs';
 import NotFoundPage from './pages/NotFoundPage';
-import './app.css';
+import './styles/app.scss';
 import RegisterPage from './pages/RegisterPage';
 import WelcomePage from './pages/WelcomePage';
-import { CurrencyListProvider } from './CurrencyContext';
+import OtherApps from './pages/OtherApps';
+import PrivacyPage from './pages/PrivacyPage';
+import ContactPage from './pages/ContactPage';
+import { CurrencyListProvider } from './utils/CurrencyContext';
+import useWindowDimensions from './utils/windowDimensions';
 
 const App: React.FC = () => {
   const { loading, auth } = useAuthInit();
+  const { width } = useWindowDimensions();
 
   if (loading) return <IonLoading isOpen />
 
@@ -24,11 +30,29 @@ const App: React.FC = () => {
         <CurrencyListProvider>
           <IonReactRouter>
             <Switch>
-              <Route exact path="/welcome">
-                <WelcomePage />
-              </Route>
+              {(width < 1024) ?
+                <Route exact path="/welcome">
+                  <WelcomePage />
+                </Route>
+                :
+                <Route exact path="/welcome">
+                  <LoginPage />
+                </Route>
+              }
               <Route exact path="/login">
                 <LoginPage />
+              </Route>
+              <Route exact path="/news">
+                <NewsPage />
+              </Route>
+              <Route exact path="/other_apps">
+                <OtherApps />
+              </Route>
+              <Route exact path="/privacy">
+                <PrivacyPage />
+              </Route>
+              <Route exact path="/contact">
+                <ContactPage />
               </Route>
               <Route exact path="/register">
                 <RegisterPage />

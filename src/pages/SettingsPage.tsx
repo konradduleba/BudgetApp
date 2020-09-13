@@ -8,15 +8,13 @@ import {
   IonFooter,
   IonActionSheet,
   IonIcon,
-  IonItem,
-  IonList,
-  IonInput
 } from '@ionic/react';
-import { auth } from '../firebase';
-import { chevronUpOutline as showIcon, chevronDownOutline as hideIcon, chevronForwardOutline as shareIcon } from 'ionicons/icons';
-import { CurrencyContext, CurrencyListContext } from '../CurrencyContext';
-import { handleSynchronizeData, registerAndSynchronizeData } from '../auth';
+import { auth } from '../utils/firebase';
+import { chevronUpOutline as showIcon, chevronDownOutline as hideIcon } from 'ionicons/icons';
+import { CurrencyContext, CurrencyListContext } from '../utils/CurrencyContext';
 import { HeaderWithTitleAndBackButton } from '../components/Headers';
+import SendMessageInputs from '../components/SendMessageInputs';
+import SynchronizeDataInputs from '../components/SynchronizeDataInputs';
 
 const SettingsPage: React.FC = () => {
   const [currency, setCurrency] = useContext(CurrencyContext);
@@ -24,28 +22,7 @@ const SettingsPage: React.FC = () => {
   const [currencyOptions, setCurrencyOptions] = useState([]);
   const [currencySheet, showCurrencySheet] = useState(false);
   const [synchronizeData, setSynchronizeData] = useState(null);
-  const [loginBtn, setLoginBtn] = useState(false);
-  const [registerBtn, setRegisterBtn] = useState(false);
-  const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
-  const [loginMessage, setlLoginMessage] = useState({ error: null, message: '' });
-  const [registerMessage, setRegisterMessage] = useState({ error: null, message: '' });
-
-  const handleInputData = type => {
-    if (type) {
-      setLoginBtn(!loginBtn);
-      setRegisterBtn(false);
-    }
-    else {
-      setLoginBtn(false);
-      setRegisterBtn(!registerBtn);
-    }
-  }
-
-  const handleSendButton = async type => {
-    if (type) await setlLoginMessage(await handleSynchronizeData(email, password));
-    else await setRegisterMessage(await registerAndSynchronizeData(email, password));
-  }
+  const [sendToMeMessage, showSendToMeMessage] = useState(false);
 
   const getLoggedWithoutRegisterValue = () => localStorage.getItem('loggedWithoutRegister');
 
@@ -54,7 +31,7 @@ const SettingsPage: React.FC = () => {
     currencyList.map(({ symbol, name, code }) => {
       if (code !== currency.code) return currencyTable.push({
         text: `${symbol} - ${name}`,
-        handler: () => setCurrency({ symbol, code })
+        handler: () => setCurrency({ symbol: ` ${symbol}`, code })
       })
       else return null;
     });
@@ -62,10 +39,10 @@ const SettingsPage: React.FC = () => {
   }, [currencyList, setCurrency, currency])
 
   return (
-    <IonPage>
+    <IonPage className='settings_page pc'>
       <HeaderWithTitleAndBackButton title='Ustawienia' />
-      <IonContent className="ion-padding">
-        <IonButton expand="block" onClick={() => showCurrencySheet(true)}>Wybierz walutę - {currency.symbol}</IonButton>
+      <IonContent className="container">
+        <IonButton expand="block" onClick={() => showCurrencySheet(true)} className='choose_btn'>Wybierz walutę - {currency.symbol}</IonButton>
         <IonActionSheet
           isOpen={currencySheet}
           onDidDismiss={() => showCurrencySheet(false)}
@@ -75,53 +52,23 @@ const SettingsPage: React.FC = () => {
         </IonActionSheet>
         {getLoggedWithoutRegisterValue() === 'true' ?
           <>
-            <IonButton expand="block" className="settings-page_property" onClick={() => setSynchronizeData(prevState => !prevState)}>Przenieś dane
-          {synchronizeData ? <IonIcon icon={showIcon} className="settings-page_icons" /> : <IonIcon icon={hideIcon} className="settings-page_icons" />}
+            <IonButton expand="block" className="property_send choose_btn" onClick={() => setSynchronizeData(prevState => !prevState)}>Przenieś dane
+          {synchronizeData ? <IonIcon icon={showIcon} className="icons" /> : <IonIcon icon={hideIcon} className="icons" />}
             </IonButton>
-            {synchronizeData &&
-              <div className="settings-page_synchronizeData">
-                <p className="settings-page_synchronizeData_info">Aby przenieść dane potrzebujesz istniejącego konta, jeżeli takowego nie posiadasz, zawsze możesz stworzyć nowe.</p>
-                <div className="settings-page_synchronizeData_options">
-                  <IonButton expand="block" fill="clear" onClick={() => handleInputData(true)} className='settings-page_synchronizeData_option login'>Zaloguj</IonButton>
-                  <IonButton expand="block" fill="clear" onClick={() => handleInputData(false)} className='settings-page_synchronizeData_option register'>Zarejestruj</IonButton>
-                </div>
-                {(registerBtn || loginBtn) && <>
-                  <IonList>
-                    <IonItem lines="none">
-                      <IonInput type="email" autocomplete="on" required={true} className="login_input" placeholder="Adres email"
-                        onIonChange={event => setEmail(event.detail.value)}></IonInput>
-                    </IonItem>
-                    <IonItem lines="none">
-                      <IonInput type="password" required={true} className="login_input" placeholder="Hasło"
-                        onIonChange={event => setPassword(event.detail.value)}
-                      ></IonInput>
-                    </IonItem>
-                  </IonList>
-                  {loginBtn &&
-                    <>
-                      {loginMessage && <span className={`settings-page_error_message ${loginMessage.error}`}>{loginMessage.message}</span>}
-                      <IonButton className="login_btn" onClick={() => handleSendButton(true)}>Zaloguj i prześlij dane</IonButton>
-                    </>
-                  }
-                  {registerBtn &&
-                    <>
-                      {registerMessage && <span className={`settings-page_error_message ${registerMessage.error}`}>{registerMessage.message}</span>}
-                      <IonButton className="login_btn" onClick={() => handleSendButton(false)}>Zarejestruj i prześlij dane</IonButton>
-                    </>
-                  }
-                </>
-                }
-              </div>}
+            {synchronizeData && <SynchronizeDataInputs />}
           </>
           :
-          <IonButton expand="block" className="settings-page_property" onClick={() => console.log('heja')}>Udostępnij zarobki
-          <IonIcon icon={shareIcon} className="settings-page_icons" />
-          </IonButton>
+          <>
+            <IonButton expand="block" className="property_send pc" onClick={() => showSendToMeMessage(!sendToMeMessage)}>Napisz do twórcy
+          <IonIcon icon={sendToMeMessage ? showIcon : hideIcon} className="icons" />
+            </IonButton>
+            {sendToMeMessage && <SendMessageInputs />}
+          </>
         }
       </IonContent>
       <IonFooter onClick={() => auth.signOut()}>
         <IonToolbar>
-          <IonTitle className="home-page_title">Wyloguj się</IonTitle>
+          <IonTitle className="title">Wyloguj się</IonTitle>
         </IonToolbar>
       </IonFooter>
     </IonPage>

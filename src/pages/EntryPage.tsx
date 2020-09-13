@@ -10,13 +10,11 @@ import {
   IonFab
 } from '@ionic/react';
 import { useParams, useHistory } from 'react-router';
-import { Entry, toEntry } from '../models';
-import { useAuth, handleDeleteDocumentByEntryId, getUserSingleEntryById } from '../auth';
-import { formatDate } from '../date';
-import { closeOutline as deleteIcon } from 'ionicons/icons';
-// import { AiFillDelete as DeleteIcon } from 'react-icons/ai';
+import { Entry, toEntry } from '../utils/models';
+import { useAuth, handleDeleteDocumentByEntryId, getUserSingleEntryById } from '../utils/auth';
+import { formatDate } from '../utils/date';
 import { FaEdit as EditIcon } from 'react-icons/fa';
-import { HeaderWithOneFunctionOption } from '../components/Headers'
+import { HeaderWithOneFunctionOption } from '../components/Headers';
 
 
 interface RouteParams {
@@ -44,13 +42,13 @@ const EntryPage: React.FC = () => {
   }
 
   return (
-    <IonPage>
+    <IonPage className='entry_page'>
       <HeaderWithOneFunctionOption
         title='Podgląd'
-        functionIcon={deleteIcon}
         handleFunction={handleDelete}
+        moveBackFunction={history.goBack}
       />
-      <IonContent className="ion-padding">
+      <IonContent>
         <IonList>
           <IonItem lines="none">
             <IonLabel>Data</IonLabel>
@@ -68,15 +66,15 @@ const EntryPage: React.FC = () => {
             <IonLabel>Opis</IonLabel>
           </IonItem>
           <IonItem lines="none">
-            <IonContent className="entry-page_description">
+            <IonContent>
               <p>{entry?.description}</p>
             </IonContent>
           </IonItem>
         </IonList>
       </IonContent>
-      <IonFab vertical="bottom" horizontal="end" slot="fixed" className="entry-page_circle_position">
+      <IonFab vertical="bottom" horizontal="end" slot="fixed" className="circle_position">
         <IonFabButton routerLink={`/my/entries/view/${id}/edit`}>
-          <EditIcon className="entry-page_circle" />
+          <EditIcon className="circle" />
         </IonFabButton>
       </IonFab>
     </IonPage>

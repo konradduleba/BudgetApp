@@ -10,7 +10,7 @@ import {
   IonImg,
   IonLabel
 } from '@ionic/react';
-import slide1Photo from '../img/slide1.png';
+import { slides } from '../utils/variables';
 
 const slideOptions = {
   initialSlide: 0,
@@ -22,35 +22,14 @@ const WelcomePage: React.FC = () => {
 
   const handleSlide = () => setStatus('Zaloguj się');
 
-  const slides = [{
-    key: "first_slide",
-    photo: slide1Photo,
-    text: 'Zaplanuj swoje wydatki z naszą aplikacją.'
-  },
-  {
-    key: "second_slide",
-    photo: slide1Photo,
-    text: 'Kontroluj swoje finanse z dowolnego miejsca.'
-  },
-  {
-    key: "third_slide",
-    photo: slide1Photo,
-    text: 'Nie martw się obliczeniami. Zrobimy to wszystko za Ciebie.'
-  },
-  {
-    key: "fourth_slide",
-    photo: slide1Photo,
-    text: 'Życzymy powodzenia !'
-  }]
-
   return (
-    <IonPage>
-      <IonContent className="ion-padding">
+    <IonPage className='welcome_page'>
+      <IonContent>
         <IonSlides pager={true} options={slideOptions} mode="md" onIonSlideReachEnd={handleSlide}>
           {slides.map(({ key, photo, text }) =>
             <IonSlide key={key}>
               <IonList>
-                <IonItem lines="none" className="slide_container">
+                <IonItem lines="none">
                   <IonImg src={photo} className="slide_photo" />
                 </IonItem>
                 <IonLabel className="slide_text">{text}</IonLabel>

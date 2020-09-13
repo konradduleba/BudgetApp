@@ -1,47 +1,48 @@
 import { IonHeader, IonToolbar, IonTitle, IonButtons, IonBackButton, IonIcon, IonButton } from '@ionic/react';
 import { chevronBackOutline as backIcon } from 'ionicons/icons';
+import { AiFillDelete as DeleteIcon } from 'react-icons/ai';
 import React from 'react';
 
 export const HeaderWithTitleAndBackButton = ({ title }) => (
-    <IonHeader>
+    <IonHeader className='header_component'>
         <IonToolbar>
-            <IonTitle className="home-page_title">{title}</IonTitle>
+            <IonTitle className="title">{title}</IonTitle>
         </IonToolbar>
-        <IonButtons className='home-page_options_settings_place'>
-            <IonBackButton icon={backIcon} className="home-page_icon" />
+        <IonButtons className='options_settings_place'>
+            <IonBackButton icon={backIcon} className="icon" />
         </IonButtons>
     </IonHeader>
 )
 
 export const HeaderWithTwoOptions = ({ title, leftOptionIcon, leftOptionRouterPath, rightOptionIcon, rightOptionRouterPath }) => (
-    <IonHeader>
-        <IonButtons className='home-page_options_left'>
+    <IonHeader className='header_component'>
+        <IonButtons className='options_left'>
             <IonButton expand="block" fill="clear" routerLink={leftOptionRouterPath}>
-                <IonIcon icon={leftOptionIcon} className="home-page_icon" />
+                <IonIcon icon={leftOptionIcon} className="icon" />
             </IonButton>
         </IonButtons>
         <IonToolbar>
-            <IonTitle className="home-page_title">{title}</IonTitle>
+            <IonTitle className="title">{title}</IonTitle>
         </IonToolbar>
-        <IonButtons className='home-page_options'>
+        <IonButtons className='options'>
             <IonButton expand="block" fill="clear" routerLink={rightOptionRouterPath}>
-                <IonIcon icon={rightOptionIcon} className="home-page_icon" />
+                <IonIcon icon={rightOptionIcon} className="icon" />
             </IonButton>
         </IonButtons>
     </IonHeader>
 )
 
-export const HeaderWithOneFunctionOption = ({ title, functionIcon, handleFunction }) => (
-    <IonHeader>
+export const HeaderWithOneFunctionOption = ({ title, handleFunction, moveBackFunction }) => (
+    <IonHeader className='header_component'>
         <IonToolbar>
-            <IonTitle className="home-page_title">{title}</IonTitle>
+            <IonTitle className="title">{title}</IonTitle>
         </IonToolbar>
-        <IonButtons className='home-page_options_settings_place'>
-            <IonBackButton icon={backIcon} className="home-page_icon" />
+        <IonButtons className='options_settings_place'>
+            <IonIcon src={backIcon} className="icon pad_left" onClick={moveBackFunction} />
         </IonButtons>
-        <IonButtons className='home-page_options'>
+        <IonButtons className='options'>
             <IonButton expand="block" fill="clear" onClick={handleFunction}>
-                <IonIcon icon={functionIcon} className="home-page_icon function" />
+                <DeleteIcon className="icon function" />
             </IonButton>
         </IonButtons>
     </IonHeader>
