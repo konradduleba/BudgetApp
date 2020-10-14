@@ -30,9 +30,14 @@ export function toGetStatus(doc, currencySymbol) {
   ];
 
   const checkIfBalanceContainCurrency = balance.filter(cur => cur.currency === currencySymbol);
-  if (!checkIfBalanceContainCurrency.length) balance.push({ currency: currencySymbol, amount: 0, spended: 0, income: 0 })
+
+  if (!checkIfBalanceContainCurrency.length) {
+    balance.push({ currency: currencySymbol, amount: 0, spended: 0, income: 0 })
+  }
+
   for (let element of doc) {
     const { amount, expense, currency } = element.data();
+
     for (let thing of balance) {
       if (thing.currency.includes(currency)) {
         if (expense) {

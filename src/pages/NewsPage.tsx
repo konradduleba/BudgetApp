@@ -14,10 +14,10 @@ const NewsPage = () => {
 
         <div className='all_page_wrapper'>
             {(width < 1024) ?
-                <RenderMenu menu={menu} showMenu={showMenu} ownerHref="./news" />
+                <RenderMenu menu={menu} showMenu={showMenu} />
                 :
                 <>
-                    {RenderMenuPC('./news')}
+                    {RenderMenuPC()}
                 </>
             }
             <section className='container_news'>

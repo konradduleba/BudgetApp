@@ -17,7 +17,7 @@ export const renderBudget = ({ nextIcon, currency, entries }) => {
                         routerLink={`/my/entries/view/${id}`}>
                         <p className="description">{description}</p>
                         <div className="amount_container">
-                            <p className={`income_${income} expense_${expense}`}>{amount}{otherCurrency ? otherCurrency : currency.symbol}</p>
+                            <p className={`income_${income} expense_${expense}`}>{parseFloat(amount).toFixed(2)}{otherCurrency ? otherCurrency : currency.symbol}</p>
                             <IonButton fill="clear" className="edit_icon">
                                 <IonIcon icon={nextIcon} />
                             </IonButton>

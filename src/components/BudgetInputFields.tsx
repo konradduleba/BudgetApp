@@ -12,6 +12,8 @@ import {
     IonText
 } from '@ionic/react';
 
+const validateInputNumber = (number, setAmount) => number < 0 ? setAmount(Math.abs(number)) : setAmount(number);
+
 export const BudgetInputFields = ({ data }) => {
     const {
         type,
@@ -27,7 +29,7 @@ export const BudgetInputFields = ({ data }) => {
             <DatePicker type='pl' value={date} onChangeFunction={setDate} />
             <IonItem lines="none">
                 <IonInput value={amount} type="number" placeholder="Wpisz kwotę" required={true} className="input_cash"
-                    onIonChange={event => setAmount(event.detail.value)}
+                    onIonChange={event => validateInputNumber(event.detail.value, setAmount)}
                 />
                 <IonButton className="input_cash" onClick={() => showCurrencySheet(true)}>{localCurrency.symbol ? `Waluta - ${localCurrency.symbol}` : `Waluta - ${currency.symbol}`}</IonButton>
                 <IonActionSheet

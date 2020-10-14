@@ -1,31 +1,37 @@
 import iphone from '../img/iphone.png';
 import piggyBudgetLogo from '../img/app_logo.png';
+import planningSlide from '../img/planning3.png';
+import controlSlide from '../img/control.png';
+import calculateSlide from '../img/calculate.png';
 
 export const dateTime = {
-    monthShortNames: [
-        'styczeń',
-        'luty',
-        'marzec',
-        'kwiecień',
-        'maj',
-        'czerwiec',
-        'lipiec',
-        'sierpień',
-        'wrzesień',
-        'październik',
-        'listopad',
-        'grudzień'
-    ],
-    cancelText: 'ANULUJ',
-    doneText: 'WYBIERZ',
+    'pl': {
+        'monthShortNames': [
+            'styczeń',
+            'luty',
+            'marzec',
+            'kwiecień',
+            'maj',
+            'czerwiec',
+            'lipiec',
+            'sierpień',
+            'wrzesień',
+            'październik',
+            'listopad',
+            'grudzień'
+        ],
+        'cancelText': 'ANULUJ',
+        'doneText': 'WYBIERZ',
+        'placeholder': 'Kiedy to było?',
+    }
 }
 
 export const successfulSynchronizeMessage = 'Udało się przesłać dane, aby je zobaczyć, zaloguj się na swoje konto.';
 export const successfulLoginMessage = 'Pomyślnie zalogowano!';
-export const successfulRegisterMessage = 'Pomyślna rejestracja, za chwilkę nastąpi zalogowanie.'
+export const successfulRegisterMessage = 'Pomyślna rejestracja, dane zostały już przeniesione, zaloguj się na swoje konto.';
 export const emptyFieldWarningMessage = 'Niektóre pola pozostały puste, pamiętaj by je uzupełnić.';
 export const successfulAddEntryMessage = 'Dodaję Twój wpis do listy rekordów.';
-export const loginMotto = 'Z łatwością kieruj swoimi finansami, planuj swoje wydatki i to wszystko z jednego miejsca.';
+export const loginMotto = 'Z łatwością kieruj swoimi finansami, planuj swoje wydatki dzięki jednej aplikacji.';
 export const appName = 'Piggy Budget';
 export const appLogo = piggyBudgetLogo;
 export const aboutMeDescription = 'To zdjęcie powyżej to ja. Lubię programować i tworzyć ciekawe aplikacje jak i strony internetowe. W wolnym czasie gram w bilarda i jeżdżę na rowerze.';
@@ -37,10 +43,6 @@ export const menuList = [{
 {
     href: './news',
     title: 'Nowości'
-},
-{
-    href: './other_apps',
-    title: 'Inne aplikacje'
 },
 {
     href: './privacy',
@@ -55,15 +57,8 @@ export const menuList = [{
 export const newsList = [{
     photo: iphone,
     title: 'Udostępnianie wydatków',
-    description: 'W najbliższym czasie, aktualizacja aplikacji wprowadzi możliwość dzielenia się swoimi wydatkami/przychodami z innymi użytkownikami. Odbywać się to będzie poprzez zrobienie screenshota wpisów i przesłanie ich na messengera. A to już zaniedługo !!'
+    description: 'Najnowsza aktualizacja: dzielenie się wydatkami i przychodami z innymi użytkownikami.'
 }]
-
-export const otherAppList = [{
-    title: 'Piggy Notes',
-    href: 'www.konradduleba.pl',
-    description: 'Piggy Notes - aplikacja z rodziny Piggy, do przechowywania swoich notatek. Już za niedługo w sklepie Play!'
-},
-]
 
 export const privacyData = [{
     title: 'Prywatność',
@@ -80,21 +75,27 @@ export const privacyData = [{
 
 export const slides = [{
     key: "first_slide",
-    photo: piggyBudgetLogo,
+    photo: planningSlide,
     text: 'Zaplanuj swoje wydatki z naszą aplikacją.'
 },
 {
     key: "second_slide",
-    photo: piggyBudgetLogo,
-    text: 'Kontroluj swoje finanse z dowolnego miejsca.'
+    photo: controlSlide,
+    text: 'Kontroluj swoje finanse z dowolnego miejsca na świecie.'
 },
 {
     key: "third_slide",
-    photo: piggyBudgetLogo,
-    text: 'Nie martw się obliczeniami. Zrobimy to wszystko za Ciebie.'
+    photo: calculateSlide,
+    text: 'Nie martw się obliczeniami. Zrobimy to za Ciebie.'
 },
 {
     key: "fourth_slide",
     photo: piggyBudgetLogo,
-    text: 'Życzymy powodzenia !'
+    text: 'Zaczynamy !'
 }]
+
+export const emailjsData = {
+    serviceID: "contact_service",
+    templateID: "template_3s2apno",
+    userID: 'user_a3rKwMsihXEmhFtHEqPZD'
+}

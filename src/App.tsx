@@ -1,6 +1,4 @@
-import {
-  IonApp, IonLoading
-} from '@ionic/react';
+import { IonApp, IonLoading } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
@@ -12,7 +10,6 @@ import NotFoundPage from './pages/NotFoundPage';
 import './styles/app.scss';
 import RegisterPage from './pages/RegisterPage';
 import WelcomePage from './pages/WelcomePage';
-import OtherApps from './pages/OtherApps';
 import PrivacyPage from './pages/PrivacyPage';
 import ContactPage from './pages/ContactPage';
 import { CurrencyListProvider } from './utils/CurrencyContext';
@@ -44,9 +41,6 @@ const App: React.FC = () => {
               </Route>
               <Route exact path="/news">
                 <NewsPage />
-              </Route>
-              <Route exact path="/other_apps">
-                <OtherApps />
               </Route>
               <Route exact path="/privacy">
                 <PrivacyPage />

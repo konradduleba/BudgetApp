@@ -11,7 +11,7 @@ import RenderMenu from '../components/RenderMenuMobile';
 
 const LoginPageOnPC = ({ setEmail, setPassword, loginMessage, menu, showMenu, handleLoginUser, loggedWithoutRegister }) => (
     <>
-        <RenderMenu menu={menu} showMenu={showMenu} ownerHref='./login' />
+        <RenderMenu menu={menu} showMenu={showMenu} />
         {!menu &&
             <IonContent className="ion-padding login_content">
                 <h2 className="app_name">{appName}</h2>

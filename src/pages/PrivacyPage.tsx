@@ -21,10 +21,10 @@ const OtherApps = () => {
     return (
         <div className='all_page_wrapper'>
             {(width < 1024) ?
-                <RenderMenu menu={menu} showMenu={showMenu} ownerHref="./privacy" />
+                <RenderMenu menu={menu} showMenu={showMenu} />
                 :
                 <>
-                    {RenderMenuPC('./privacy')}
+                    {RenderMenuPC()}
                 </>
             }
             <section className='container_privacy'>

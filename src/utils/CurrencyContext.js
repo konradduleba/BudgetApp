@@ -15,18 +15,23 @@ export const CurrencyListProvider = props => {
 export const showCalulatedCurrency = (currencyList, currency, amount, localCurrency) => {
     const localCurrencyRate = currencyList.filter(currency => currency.symbol === localCurrency.symbol);
     const rateOfCurrency = currencyList.filter(({ code }) => code === currency.code);
-    return (parseFloat(amount) * localCurrencyRate[0].rateForPLN / rateOfCurrency[0].rateForPLN).toFixed(2);
+
+    return (parseFloat(amount) * (localCurrencyRate && localCurrencyRate[0] && localCurrencyRate[0].rateForPLN) / (rateOfCurrency && rateOfCurrency[0] && rateOfCurrency[0].rateForPLN)).toFixed(2);
 };
 
 export const showAvaibleCurrencies = (setLocalCurrency, currencyList, currency) => {
     const currencyTable = [];
+
     currencyList.map(({ symbol, name, code, rateForPLN }) => {
-        if (code !== currency.code) return currencyTable.push({
-            text: `${symbol} - ${name}`,
-            handler: () => setLocalCurrency({ symbol, code, rateForPLN })
-        })
-        else return null;
+        if (code !== currency.code)
+            return currencyTable.push({
+                text: `${symbol} - ${name}`,
+                handler: () => setLocalCurrency({ symbol, code, rateForPLN })
+            })
+
+        return null;
     });
+
     return currencyTable;
 }
 

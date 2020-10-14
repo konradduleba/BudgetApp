@@ -14,7 +14,7 @@ import { appName, loginMotto } from '../utils/variables';
 
 const LoginPageOnPC = ({ setEmail, setPassword, loginMessage, handleLoginUser, handleRegisterUser, loggedWithoutRegister }) => (
     <>
-        {RenderMenuPC('/login')}
+        {RenderMenuPC()}
         <section className="main_content">
             <div className='login_panel'>
                 <h2 className="app_name">{appName}</h2>

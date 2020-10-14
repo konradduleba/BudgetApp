@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { IonInput, IonTextarea } from '@ionic/react';
 import emailjs from 'emailjs-com';
 import { useAuth } from '../utils/auth';
+import { emailjsData } from '../utils/variables';
 
 const SendMessageInputs = () => {
     const { userId } = useAuth();
@@ -12,10 +13,14 @@ const SendMessageInputs = () => {
 
     const sendMessage = event => {
         event.preventDefault();
-        if (name && email && message)
-            emailjs.send("contact_service", "template_3s2apno", { message, userId, name, email }, 'user_a3rKwMsihXEmhFtHEqPZD')
-                .then((result) => setResponseMessage({ status: true, message: 'Wiadomość została wysłana' }),
+        if (name && email && message) {
+            const { serviceID, templateID, userID } = emailjsData;
+            const templateParams = { message, userId, name, email };
+
+            emailjs.send(serviceID, templateID, templateParams, userID)
+                .then(result => setResponseMessage({ status: true, message: 'Wiadomość została wysłana' }),
                     (error) => setResponseMessage({ status: false, message: error.text }));
+        }
     };
 
     return (

@@ -61,8 +61,7 @@ const HomePage: React.FC = () => {
               <IonItem lines="none">
                 <IonImg src={emptyWallet} className="empty_wallet" />
               </IonItem>
-              <IonLabel className="main_text">Coś tu pusto</IonLabel>
-              <IonLabel className="text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Natus, officiis!</IonLabel>
+              <IonLabel className="main_text text">Nie masz jeszcze żadnych danych.</IonLabel>
               <IonButton className="login_btn" routerLink="/my/entries/add">Dodaj swój pierwszy budżet</IonButton>
             </IonList>
           </IonContent>

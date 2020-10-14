@@ -11,7 +11,7 @@ import {
 import { appLogo } from '../utils/variables';
 import { RenderMenuPC } from './RenderMenuPC';
 
-const RenderMenu = ({ menu, showMenu, ownerHref }) => {
+const RenderMenu = ({ menu, showMenu }) => {
     return (
         <>
             <IonHeader>
@@ -26,7 +26,7 @@ const RenderMenu = ({ menu, showMenu, ownerHref }) => {
             </IonHeader>
             {menu &&
                 <IonContent>
-                    {RenderMenuPC(ownerHref)}
+                    {RenderMenuPC()}
                 </IonContent>
             }
         </>

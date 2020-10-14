@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { RenderMenuPC } from '../components/RenderMenuPC';
 import SendMessageInputs from '../components/SendMessageInputs';
-import myPhoto from '../img/me.jpg';
-import { aboutMeDescription } from '../utils/variables';
 import useWindowDimensions from '../utils/windowDimensions';
 import RenderMenu from '../components/RenderMenuMobile';
 
@@ -13,22 +11,18 @@ const ContactPage = () => {
     return (
         <div className='all_page_wrapper'>
             {(width < 1024) ?
-                <RenderMenu menu={menu} showMenu={showMenu} ownerHref='./contact' />
+                <RenderMenu menu={menu} showMenu={showMenu} />
                 :
                 <>
-                    {RenderMenuPC('./contact')}
+                    {RenderMenuPC()}
                 </>
             }
             <section className='container_contact'>
                 <div className='contact'>
-                    <div className='about_me'>
-                        <img src={myPhoto} alt='konrad duleba' />
-                        <p>{aboutMeDescription}</p>
-                    </div>
                     <div className='form'>
                         <div className='title'>
-                            <h1>Skontaktuj się ze mną</h1>
-                            <p>Możesz to zrobić tutaj lub z poziomu aplikacji</p>
+                            <h1>Skontaktuj się z nami</h1>
+                            <p>Możesz to zrobić przez formularz lub z poziomu aplikacji</p>
                         </div>
                         <SendMessageInputs />
                     </div>

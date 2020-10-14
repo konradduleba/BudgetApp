@@ -8,14 +8,14 @@ const PageLink = ({ href, title }) =>
         <li className="menu_element">{title}</li>
     </IonRouterLink>
 
-const getMenuWithoutOwner = ownerHref => menuList.filter(({ href }) => href !== ownerHref)
+const renderMenuList = () => menuList.map(({ href, title }) => <PageLink key={title} href={href} title={title} />)
 
-export const RenderMenuPC = owner =>
+export const RenderMenuPC = () =>
     <section className="menu_and_logo">
         <img src={appLogo} alt="piggy" />
         <nav className="menu">
             <ul className="menu_list">
-                {getMenuWithoutOwner(owner).map(({ href, title }) => <PageLink key={title} href={href} title={title} />)}
+                {renderMenuList()}
             </ul>
         </nav>
     </section>
