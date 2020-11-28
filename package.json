@@ -1,6 +1,6 @@
 {
   "homepage": "http://konradduleba.github.io/BudgetApp",
-  "name": "budget-app",
+  "name": "piggy-budget",
   "version": "0.0.1",
   "private": true,
   "dependencies": {
