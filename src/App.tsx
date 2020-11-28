@@ -25,7 +25,7 @@ const App: React.FC = () => {
     <IonApp>
       <AuthContext.Provider value={auth}>
         <CurrencyListProvider>
-          <IonReactRouter>
+          <IonReactRouter basename={process.env.PUBLIC_URL}>
             <Switch>
               {(width < 1024) ?
                 <Route exact path="/welcome">
