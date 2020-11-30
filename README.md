@@ -1,12 +1,16 @@
-<h1>Piggy Budget</h1>
+<h2>Piggy Budget</h2>
+Fully completed budget control application which allows users to save their incomes and expenses, edit information, convert currencies and transfer entries between accounts.
+Piggy Budget uses Ionic Framework and it is integrated with Firebase, so it allows users to use app on Android OP.
 
-<b>Piggy Budget</b> is an application that can help you track your personal finances on the go to give you an overall picture of what you're earning, what you're spending, and what you may need to change.
+<br/>Actual functionalities in a shortcut:
+- register, login,
+- creating, modifying, viewing or deleting information,
+- selecting the main currency,
+- transfer entries only for unregistred users
 
-Technologies which I've been using in this project:
-- React,
-- SCSS,
-- Javascript/Typescript,
-- Ionic,
+ACQUAINTED TECHNOLOGIES:
+- React
+- Typescript
+- SASS
+- IONIC
 - Firebase
-
-<b>Project is in further development.</b>
